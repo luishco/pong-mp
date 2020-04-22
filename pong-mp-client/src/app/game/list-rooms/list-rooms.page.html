@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>list-rooms</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div id="user-area">
+    <ion-avatar>
+      <img src="/assets/avatar.svg">
+    </ion-avatar>
+    <span>{{userName}}</span>
+  </div>
+
+  <div id="rooms">
+    <div class="room" *ngFor="let room of mockRooms">
+      <ion-button>
+        <span *ngIf="room.maxPlayers === room.players.length; then full_button else vs_button"></span>
+        <ng-template #vs_button>JOIN</ng-template>
+        <ng-template #full_button>FULL</ng-template>
+      </ion-button>
+      <div class="room-content">
+        <span>{{room.players.join(' vs ')}}</span>
+      </div>
+    </div>
+  </div>
+</ion-content>

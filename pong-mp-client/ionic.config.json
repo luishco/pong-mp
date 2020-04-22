@@ -1,0 +1,7 @@
+{
+  "name": "pong-mp-client",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

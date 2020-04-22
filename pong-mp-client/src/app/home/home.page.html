@@ -1,0 +1,25 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      mp-pong-client
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">mp-pong-client</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div id="container">
+    <div class="game-logo">LOGO</div>
+    <div class="menu">
+      <ion-button [routerLink]="['/login']">Login</ion-button>
+      <ion-button [routerLink]="['/list-rooms']">Play as a Guest</ion-button>
+      <span class="divider line one-line">or</span>
+      <ion-button [routerLink]="['/register']">Registrer</ion-button>
+    </div>
+  </div>
+</ion-content>
