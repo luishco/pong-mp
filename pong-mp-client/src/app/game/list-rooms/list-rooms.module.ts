@@ -8,12 +8,19 @@ import { ListRoomsPageRoutingModule } from './list-rooms-routing.module';
 
 import { ListRoomsPage } from './list-rooms.page';
 
+import { SocketIoModule, SocketIoConfig } from 'ng-socket-io'
+const socketIoConfig: SocketIoConfig = {
+  url: 'http://localhost:3000',
+  options: {}
+}
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ListRoomsPageRoutingModule
+    ListRoomsPageRoutingModule,
+    SocketIoModule.forRoot(socketIoConfig)
   ],
   declarations: [ListRoomsPage]
 })

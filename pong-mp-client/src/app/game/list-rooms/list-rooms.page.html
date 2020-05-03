@@ -12,7 +12,7 @@
     <ion-avatar>
       <img src="/assets/avatar.svg">
     </ion-avatar>
-    <span>{{userName}}</span>
+    <span>{{user.userName}}</span>
   </div>
 
   <div id="rooms">
@@ -27,4 +27,13 @@
       </div>
     </div>
   </div>
+
+  <ion-fab vertical="bottom" horizontal="start" edge slot="fixed" id="add-room">
+    <ion-fab-button>
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="end">
+      <!-- <div [(ngModel)]=''></div> -->
+    </ion-fab-list>
+  </ion-fab>
 </ion-content>
