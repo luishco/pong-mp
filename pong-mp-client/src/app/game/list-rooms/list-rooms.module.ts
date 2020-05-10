@@ -9,8 +9,11 @@ import { ListRoomsPageRoutingModule } from './list-rooms-routing.module';
 import { ListRoomsPage } from './list-rooms.page';
 
 import { SocketIoModule, SocketIoConfig } from 'ng-socket-io'
+
+import { serverAddress } from '../../../environments/environment'
+
 const socketIoConfig: SocketIoConfig = {
-  url: 'http://localhost:3000',
+  url: serverAddress,
   options: {}
 }
 
