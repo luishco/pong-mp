@@ -8,25 +8,25 @@
 </ion-header>
 
 <ion-content>
-  <form>
+  <form (ngSubmit)="signUp()" [formGroup]="registerForm">
     <ion-item lines="full">
       <ion-label position="floating">Real name</ion-label>
-      <ion-input type="text" required></ion-input>
+      <ion-input type="text" formControlName="real_name" required></ion-input>
     </ion-item>
 
     <ion-item lines="full">
       <ion-label position="floating">Username</ion-label>
-      <ion-input type="text" required></ion-input>
+      <ion-input type="text" formControlName="username" required></ion-input>
     </ion-item>
 
     <ion-item lines="full">
       <ion-label position="floating">Email</ion-label>
-      <ion-input type="text" required></ion-input>
+      <ion-input type="text" formControlName="email" required></ion-input>
     </ion-item>
 
     <ion-item lines="full">
       <ion-label position="floating">Password</ion-label>
-      <ion-input type="password" required></ion-input>
+      <ion-input type="password" formControlName="password" required></ion-input>
     </ion-item>
 
     <ion-row>
@@ -35,4 +35,7 @@
       </ion-col>
     </ion-row>
   </form>
+
+  <div class="form-error">{{registerError}}</div>
+
 </ion-content>

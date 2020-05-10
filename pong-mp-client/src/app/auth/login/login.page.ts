@@ -19,7 +19,7 @@ export class LoginPage implements OnInit {
     });
   }
 
-  login() {
+  login () {
     let data = this.loginForm.value;
 
     if (!data.email) {
