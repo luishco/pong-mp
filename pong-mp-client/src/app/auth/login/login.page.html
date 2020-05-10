@@ -8,21 +8,28 @@
 </ion-header>
 
 <ion-content>
-  <form>
+  <form (ngSubmit)="login()" [formGroup]="loginForm">
     <ion-item lines="full">
-      <ion-label position="floating">Username</ion-label>
-      <ion-input type="text" required></ion-input>
+      <ion-label position="floating" expand="block">E-mail</ion-label>
+      <ion-input type="text" formControlName="email" required></ion-input>
     </ion-item>
 
     <ion-item lines="full">
       <ion-label position="floating">Password</ion-label>
-      <ion-input type="password" required></ion-input>
+      <ion-input type="password" formControlName="password" required></ion-input>
     </ion-item>
 
     <ion-row>
       <ion-col>
-        <ion-button type="submit" expand="block">Sign In</ion-button>
+        <ion-button expand="block" type="submit">Sign In</ion-button>
       </ion-col>
     </ion-row>
   </form>
+  
+  <div class="form-error">{{loginError}}</div>
+
+  <ion-item lines="full">
+    <ion-label>Not a member?</ion-label>
+    <a [routerLink]="['/register']">Create Account</a>
+  </ion-item>
 </ion-content>
