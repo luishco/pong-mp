@@ -4,18 +4,38 @@ let io = require('socket.io')(http);
 
 io.on('connection', (socket) => {
   let rooms = [];
+  let users = [];
 
+  // INITIAL SETUP
   console.log('a user connected');
-  console.log(socket.adapter.rooms);
-
+  if (rooms.length)
+    socket.emit('update-rooms', rooms);
+  
   socket.on('set-user-data', (userData) => {
     socket.user = userData;
+    users.push(socket.user);
   });
 
   socket.on('create-room', (roomProperties) => {
-    this.rooms.push(roomProperties);
+    socket.leave(socket.room);
+    socket.room = roomProperties.name;
+    socket.room.owner = socket.user.userName;
+    io.emit('update-rooms', roomProperties);
   });
 
+  socket.on('leave-room', () => {
+  });
+
+  function deleteRoom() {
+    if (socket.room === socket.user.userName) {
+      socket.leave(socket.room);
+      socket.emit('update-rooms', rooms);
+    }
+  }
+
+  socket.on('disconnect', () => {
+    console.log(`user ${socket.user.userName} disconnected`);
+  });
 });
 
 http.listen(3000, () => {

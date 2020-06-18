@@ -10,12 +10,27 @@ export class ListRoomsPage implements OnInit {
   user = {
     userName: `user-${new Date().getTime()}`
   }
+  rooms = []
 
-  constructor(private socket: Socket) { }
+  constructor(private socket: Socket) {
+    socket.on('update-rooms', (newRoom) => {
+      this.rooms.push(newRoom)
+    });
+  }
 
   startConnection() {
     this.socket.connect()
     this.socket.emit('set-user-data', this.user)
+  }
+
+  createRoom() {
+    this.socket.emit('create-room', {
+      locked: false,
+      maxPlayers: 2,
+      status: 'waiting',
+      name: this.user.userName,
+      players: [this.user.userName]
+    });
   }
 
   ngOnInit() {

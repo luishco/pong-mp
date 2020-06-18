@@ -16,7 +16,7 @@
   </div>
 
   <div id="rooms">
-    <div class="room" *ngFor="let room of mockRooms">
+    <div class="room" *ngFor="let room of rooms">
       <ion-button>
         <span *ngIf="room.maxPlayers === room.players.length; then full_button else vs_button"></span>
         <ng-template #vs_button>JOIN</ng-template>
@@ -28,12 +28,11 @@
     </div>
   </div>
 
-  <ion-fab vertical="bottom" horizontal="start" edge slot="fixed" id="add-room">
+  <ion-fab vertical="bottom" horizontal="start" edge slot="fixed" id="add-room" (click)="createRoom()">
     <ion-fab-button>
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
     <ion-fab-list side="end">
-      <!-- <div [(ngModel)]=''></div>  -->
     </ion-fab-list>
   </ion-fab>
 </ion-content>
