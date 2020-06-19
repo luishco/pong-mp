@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Socket } from 'ng-socket-io';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-list-rooms',
@@ -7,14 +8,15 @@ import { Socket } from 'ng-socket-io';
   styleUrls: ['./list-rooms.page.scss'],
 })
 export class ListRoomsPage implements OnInit {
+  objectKeys = Object.keys;
   user = {
     userName: `user-${new Date().getTime()}`
   }
   rooms = []
 
-  constructor(private socket: Socket) {
-    socket.on('update-rooms', (newRoom) => {
-      this.rooms.push(newRoom)
+  constructor(private socket: Socket, private router: Router) {
+    socket.on('update-rooms', (rooms) => {
+        this.rooms = rooms
     });
   }
 
@@ -31,6 +33,8 @@ export class ListRoomsPage implements OnInit {
       name: this.user.userName,
       players: [this.user.userName]
     });
+
+    this.router.navigateByUrl('/room')
   }
 
   ngOnInit() {

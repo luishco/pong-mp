@@ -4,19 +4,19 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { ListRoomsPageRoutingModule } from './list-rooms-routing.module';
+import { RoomPageRoutingModule } from './room-routing.module';
 
-import { ListRoomsPage } from './list-rooms.page';
+import { SocketIoModule, SocketIoConfig } from 'ng-socket-io'
 
-
+import { RoomPage } from './room.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ListRoomsPageRoutingModule
+    RoomPageRoutingModule
   ],
-  declarations: [ListRoomsPage]
+  declarations: [RoomPage]
 })
-export class ListRoomsPageModule {}
+export class RoomPageModule {}

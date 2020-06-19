@@ -2,10 +2,9 @@ let app = require('express')();
 let http = require('http').createServer(app);
 let io = require('socket.io')(http);
 
+let rooms = [];
+let users = [];
 io.on('connection', (socket) => {
-  let rooms = [];
-  let users = [];
-
   // INITIAL SETUP
   console.log('a user connected');
   if (rooms.length)
@@ -18,22 +17,32 @@ io.on('connection', (socket) => {
 
   socket.on('create-room', (roomProperties) => {
     socket.leave(socket.room);
-    socket.room = roomProperties.name;
+    socket.room = roomProperties;
     socket.room.owner = socket.user.userName;
-    io.emit('update-rooms', roomProperties);
+    rooms.push(socket.room);
+    io.emit('update-rooms', rooms);
   });
 
   socket.on('leave-room', () => {
+    console.log('leave-room')
+    if (socket.room.owner === socket.user.userName)
+      deleteRoom();
+    else {
+      rooms.filter((room) => {
+      })
+    }
   });
 
   function deleteRoom() {
-    if (socket.room === socket.user.userName) {
-      socket.leave(socket.room);
-      socket.emit('update-rooms', rooms);
-    }
+    rooms = rooms.filter((room) => {
+      return room !== socket.room
+    })
+    socket.leave(socket.room)
+    io.emit('update-rooms', rooms)
   }
 
   socket.on('disconnect', () => {
+    deleteRoom()
     console.log(`user ${socket.user.userName} disconnected`);
   });
 });

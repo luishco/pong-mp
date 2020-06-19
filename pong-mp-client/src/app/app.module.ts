@@ -13,6 +13,14 @@ import { AngularFireModule } from 'angularfire2'
 import { AngularFireAuth } from 'angularfire2/auth'
 import { firebaseConfig } from '../environments/environment'
 import { AuthService } from './services/auth.service'
+import { SocketIoModule, SocketIoConfig } from 'ng-socket-io'
+
+import { serverAddress } from '../environments/environment'
+
+const socketIoConfig: SocketIoConfig = {
+  url: serverAddress,
+  options: {}
+}
 
 @NgModule({
   declarations: [AppComponent],
@@ -21,7 +29,8 @@ import { AuthService } from './services/auth.service'
     BrowserModule, 
     IonicModule.forRoot(), 
     AppRoutingModule,
-    AngularFireModule.initializeApp(firebaseConfig)
+    AngularFireModule.initializeApp(firebaseConfig),
+    SocketIoModule.forRoot(socketIoConfig)
   ],
   providers: [
     StatusBar,
