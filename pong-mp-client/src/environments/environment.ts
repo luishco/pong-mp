@@ -17,7 +17,7 @@ export const firebaseConfig = {
   measurementId: "G-2WR2CVR9RN"
 };
 
-export const serverAddress = 'http://localhost:3000';
+export const serverAddress = '192.168.0.16:3000';
 
 /*
  * For easier debugging in development mode, you can import the following file

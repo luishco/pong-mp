@@ -1,7 +1,8 @@
 {
   "name": "pong-mp-client",
   "integrations": {
-    "capacitor": {}
+    "capacitor": {},
+    "cordova": {}
   },
   "type": "angular"
 }

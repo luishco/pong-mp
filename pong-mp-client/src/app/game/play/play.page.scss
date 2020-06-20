@@ -1,0 +1,14 @@
+.field {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    background-color: black;
+}
+
+canvas {
+    align-self: center;
+    border: solid white 10px;
+    border-radius: 2px;
+}

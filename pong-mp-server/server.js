@@ -24,12 +24,10 @@ io.on('connection', (socket) => {
   });
 
   socket.on('leave-room', () => {
-    console.log('leave-room')
     if (socket.room.owner === socket.user.userName)
       deleteRoom();
     else {
-      rooms.filter((room) => {
-      })
+      // TODO: QUANDO JOINAR A SALA, PODER SAIR
     }
   });
 
@@ -41,9 +39,16 @@ io.on('connection', (socket) => {
     io.emit('update-rooms', rooms)
   }
 
+  socket.on('move-player', (pos) => {
+    socket.emit('move-player', pos);
+  })
+
   socket.on('disconnect', () => {
     deleteRoom()
-    console.log(`user ${socket.user.userName} disconnected`);
+    users = users.filter((user) => {
+      return user !== socket.user
+    });
+    console.log(`a user disconnected`);
   });
 });
 
