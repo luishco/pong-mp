@@ -8,31 +8,35 @@
 </ion-header>
 
 <ion-content>
-  <div id="user-area">
-    <ion-avatar>
-      <img src="/assets/avatar.svg">
-    </ion-avatar>
-    <span>{{user.userName}}</span>
-  </div>
-
-  <div id="rooms">
-    <div class="room" *ngFor="let room of objectKeys(rooms)">
-      <ion-button (click)="joinRoom(rooms[room].name)">
-        <span *ngIf="rooms[room].maxPlayers === rooms[room].players.length; then full_button else vs_button"></span>
-        <ng-template #vs_button>JOIN</ng-template>
-        <ng-template #full_button>FULL</ng-template>
-      </ion-button>
-      <div class="room-content">
-        <span>{{objectKeys(rooms[room].players).join(' vs ')}}</span>
-      </div>
+  <div id="content">
+    <div id="user-area">
+      <ion-avatar (click)="takePicture()">
+        <img src="/assets/avatar.svg">
+      </ion-avatar>
+      <span>{{user.userName}}</span>
     </div>
-  </div>
 
-  <ion-fab vertical="bottom" horizontal="start" edge slot="fixed" id="add-room" (click)="createRoom()">
-    <ion-fab-button>
-      <ion-icon name="add"></ion-icon>
-    </ion-fab-button>
-    <ion-fab-list side="end">
-    </ion-fab-list>
-  </ion-fab>
+    <div id="rooms">
+      <div *ngIf="objectKeys(rooms).length > 0; then rooms_avaible else no_rooms"></div>
+      <ng-template #rooms_avaible>
+        <div class="room" *ngFor="let room of objectKeys(rooms)">
+            <span *ngIf="rooms[room].maxPlayers === objectKeys(rooms[room].players).length; then full_button else vs_button"></span>
+            <ng-template #vs_button><ion-button (click)="joinRoom(rooms[room].name)" class="join-room">JOIN</ion-button></ng-template>
+            <ng-template #full_button><ion-button class="full-room" color="medium">FULL</ion-button></ng-template>
+          <div class="room-content">
+            <span>{{objectKeys(rooms[room].players).join(' vs ')}}</span>
+          </div>
+        </div>
+      </ng-template>
+      <ng-template #no_rooms><div class="room">No rooms avaible</div></ng-template>
+    </div>
+
+    <ion-fab vertical="bottom" horizontal="start" edge slot="fixed" id="add-room" (click)="createRoom()">
+      <ion-fab-button>
+        <ion-icon name="add"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-list side="end">
+      </ion-fab-list>
+    </ion-fab>
+  </div>
 </ion-content>

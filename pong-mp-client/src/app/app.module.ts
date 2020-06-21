@@ -14,6 +14,7 @@ import { AngularFireAuth } from 'angularfire2/auth'
 import { firebaseConfig } from '../environments/environment'
 import { AuthService } from './services/auth.service'
 import { SocketIoModule, SocketIoConfig } from 'ng-socket-io'
+import { Camera } from '@ionic-native/camera/ngx'
 
 import { serverAddress } from '../environments/environment'
 
@@ -37,7 +38,8 @@ const socketIoConfig: SocketIoConfig = {
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     AngularFireAuth,
-    AuthService
+    AuthService,
+    Camera
   ],
   bootstrap: [AppComponent]
 })
