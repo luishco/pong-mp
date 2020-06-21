@@ -11,6 +11,9 @@ export class RoomPage implements OnInit {
   constructor(private socket: Socket) { }
 
   ionViewWillLeave() {
+  }
+
+  leaveRoom() {
     this.socket.emit('leave-room')
   }
 

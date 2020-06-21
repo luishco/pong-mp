@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ɵConsole } from '@angular/core';
 import { Socket } from 'ng-socket-io';
 import { Router } from '@angular/router';
 
@@ -10,19 +10,18 @@ import { Router } from '@angular/router';
 export class ListRoomsPage implements OnInit {
   objectKeys = Object.keys;
   user = {
-    userName: `user-${new Date().getTime()}`
+    userName: `user-${new Date().getTime()}`,
+    room: null
   }
-  rooms = []
+  rooms = {}
 
   constructor(private socket: Socket, private router: Router) {
     socket.on('update-rooms', (rooms) => {
-        this.rooms = rooms
+      this.rooms = rooms
     });
-  }
-
-  startConnection() {
-    this.socket.connect()
-    this.socket.emit('set-user-data', this.user)
+    socket.on('set-user-data', (userData) => {
+      this.user = userData
+    })
   }
 
   createRoom() {
@@ -30,15 +29,26 @@ export class ListRoomsPage implements OnInit {
       locked: false,
       maxPlayers: 2,
       status: 'waiting',
-      name: this.user.userName,
-      players: [this.user.userName]
+      name: new Date().getTime(),
+      players: [
+        this.user.userName
+      ]
     });
 
     this.router.navigateByUrl('/room')
   }
 
-  ngOnInit() {
-    this.startConnection()
+  joinRoom(roomName: string) {
+    this.socket.emit('join-room', roomName)
+    this.user.room = roomName
+    this.router.navigateByUrl('/room')
   }
 
+  ngOnInit() {
+  }
+
+  ionViewWillEnter() {
+    this.socket.connect()
+    this.socket.emit('set-user-data', this.user)
+  }
 }

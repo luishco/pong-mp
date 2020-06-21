@@ -16,14 +16,14 @@
   </div>
 
   <div id="rooms">
-    <div class="room" *ngFor="let room of rooms">
-      <ion-button>
-        <span *ngIf="room.maxPlayers === room.players.length; then full_button else vs_button"></span>
+    <div class="room" *ngFor="let room of objectKeys(rooms)">
+      <ion-button (click)="joinRoom(rooms[room].name)">
+        <span *ngIf="rooms[room].maxPlayers === rooms[room].players.length; then full_button else vs_button"></span>
         <ng-template #vs_button>JOIN</ng-template>
         <ng-template #full_button>FULL</ng-template>
       </ion-button>
       <div class="room-content">
-        <span>{{room.players.join(' vs ')}}</span>
+        <span>{{rooms[room].players.join(' vs ')}}</span>
       </div>
     </div>
   </div>

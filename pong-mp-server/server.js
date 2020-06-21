@@ -2,54 +2,75 @@ let app = require('express')();
 let http = require('http').createServer(app);
 let io = require('socket.io')(http);
 
-let rooms = [];
-let users = [];
+let rooms = {};
+let users = {};
 io.on('connection', (socket) => {
-  // INITIAL SETUP
   console.log('a user connected');
-  if (rooms.length)
+  if (Object.keys(rooms).length)
     socket.emit('update-rooms', rooms);
   
   socket.on('set-user-data', (userData) => {
-    socket.user = userData;
-    users.push(socket.user);
-  });
-
-  socket.on('create-room', (roomProperties) => {
-    socket.leave(socket.room);
-    socket.room = roomProperties;
-    socket.room.owner = socket.user.userName;
-    rooms.push(socket.room);
-    io.emit('update-rooms', rooms);
-  });
-
-  socket.on('leave-room', () => {
-    if (socket.room.owner === socket.user.userName)
-      deleteRoom();
-    else {
-      // TODO: QUANDO JOINAR A SALA, PODER SAIR
+    if (!users[socket.id]) {
+      userData.room = null
+      users[socket.id] = userData
+      socket.user = userData
+    } else {
+      setUserData()
     }
   });
 
-  function deleteRoom() {
-    rooms = rooms.filter((room) => {
-      return room !== socket.room
-    })
-    socket.leave(socket.room)
-    io.emit('update-rooms', rooms)
-  }
+  socket.on('create-room', (roomProperties) => {
+    socket.join(roomProperties.name);
+    users[socket.id].room = roomProperties.name;
+    roomProperties.owner = socket.id;
+    rooms[roomProperties.name] = roomProperties;
+    setUserData()
+    io.emit('update-rooms', rooms);
+  });
+
+  socket.on('join-room', (roomName) => {
+    users[socket.id].room = roomName;
+    socket.join(roomName);
+    setUserData()
+  });
 
   socket.on('move-player', (pos) => {
-    socket.emit('move-player', pos);
+    socket.broadcast.to(socket.user.room).emit('move-player', pos)
   })
 
+  socket.on('leave-room', () => {
+    leaveRoom();
+  });
+
+  socket.on('get-rooms', () => {
+    socket.emit('update-rooms', rooms)
+  });
+
   socket.on('disconnect', () => {
-    deleteRoom()
-    users = users.filter((user) => {
-      return user !== socket.user
-    });
+    leaveRoom();
+    delete users[socket.id]
     console.log(`a user disconnected`);
   });
+
+  function leaveRoom() {
+    if (users[socket.id].room !== null) {
+      if (rooms[socket.user.room].owner === socket.id) {
+        delete rooms[users[socket.id].room]
+      } else {
+        rooms = rooms[socket.user.room].players.filter((player) => {
+          return player !== users[socket.id].userName
+        })
+      }
+      socket.leave(users[socket.id].room)
+      users[socket.id].room = null
+      io.emit('update-rooms', rooms)
+    }
+  }
+
+  function setUserData() {
+    socket.user = users[socket.id]
+    socket.broadcast.to(socket.id).emit('set-user-data', users[socket.id])
+  }
 });
 
 http.listen(3000, () => {
