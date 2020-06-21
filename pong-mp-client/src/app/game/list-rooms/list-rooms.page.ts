@@ -25,15 +25,19 @@ export class ListRoomsPage implements OnInit {
   }
 
   createRoom() {
-    this.socket.emit('create-room', {
+    const userId = this.socket.ioSocket.id
+    let room = {
       locked: false,
       maxPlayers: 2,
       status: 'waiting',
       name: new Date().getTime(),
-      players: [
-        this.user.userName
-      ]
-    });
+      players: {}
+    }
+    room.players[userId] = {
+      status: 'waiting'
+    }
+    
+    this.socket.emit('create-room', room);
 
     this.router.navigateByUrl('/room')
   }
@@ -51,4 +55,5 @@ export class ListRoomsPage implements OnInit {
     this.socket.connect()
     this.socket.emit('set-user-data', this.user)
   }
+      
 }

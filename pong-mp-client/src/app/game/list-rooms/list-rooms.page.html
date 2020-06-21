@@ -23,7 +23,7 @@
         <ng-template #full_button>FULL</ng-template>
       </ion-button>
       <div class="room-content">
-        <span>{{rooms[room].players.join(' vs ')}}</span>
+        <span>{{objectKeys(rooms[room].players).join(' vs ')}}</span>
       </div>
     </div>
   </div>

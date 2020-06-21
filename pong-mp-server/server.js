@@ -30,6 +30,9 @@ io.on('connection', (socket) => {
 
   socket.on('join-room', (roomName) => {
     users[socket.id].room = roomName;
+    rooms[roomName].players[socket.id] = {
+      'status': 'waiting'
+    }
     socket.join(roomName);
     setUserData()
   });
@@ -45,6 +48,20 @@ io.on('connection', (socket) => {
   socket.on('get-rooms', () => {
     socket.emit('update-rooms', rooms)
   });
+
+  socket.on('player-ready', () => {
+    console.log(`player ${socket.user.userName} ready!`)
+    rooms[socket.user.room].players[socket.id].status = 'ready'
+    
+    let allReady = (Object.keys(rooms[socket.user.room].players).filter((player) => {
+      return rooms[socket.user.room].players[player].status !== 'ready'
+    })).length == 0
+    
+    if(allReady) {
+      io.sockets.in(socket.user.room).emit('start-game')
+    }
+  });
+
 
   socket.on('disconnect', () => {
     leaveRoom();
@@ -70,6 +87,10 @@ io.on('connection', (socket) => {
   function setUserData() {
     socket.user = users[socket.id]
     socket.broadcast.to(socket.id).emit('set-user-data', users[socket.id])
+  }
+
+  function randomInt(min, max) {
+    return min + Math.floor((max - min) * Math.random());
   }
 });
 

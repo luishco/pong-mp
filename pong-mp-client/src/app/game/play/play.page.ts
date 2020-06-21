@@ -24,7 +24,8 @@ export class PlayPage implements OnInit {
 
   ngAfterViewInit() {
     this.startCanvas()
-    this.play()
+
+    this.socket.emit('player-ready')
 
     const gesture = createGesture({
       el: this.canvasElement,
@@ -38,6 +39,11 @@ export class PlayPage implements OnInit {
     this.socket.on('move-player', (playerPos) => {
       this.players[1].pos.x = playerPos;
     })
+
+    this.socket.on('start-game', () => {
+      console.log('start');
+      this.play()
+    });
   }
 
   onMoveHandler(ev) {
