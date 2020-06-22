@@ -44,6 +44,7 @@ export class PlayPage implements OnInit {
       console.log('start');
       this.play()
     });
+    
   }
 
   onMoveHandler(ev) {
@@ -118,10 +119,6 @@ export class PlayPage implements OnInit {
     b.vel.x = 200 * (Math.random() > .5 ? 1 : -1);
     b.vel.y = 200 * (Math.random() * 2 - 1);
     b.vel.len = this.initialSpeed;
-
-    // Stop watch
-    // subscription.unsubscribe();
-    // }
   }
   reset() {
     const b = this.ball;
